@@ -30,6 +30,7 @@ public class Game {
     private boolean exit_key;
     private Ship ship;
     private Bullet bala;
+    private Wall wall[]; //ubrat massiv esli xotim 1 wall
 
     public Game() {
         this.exit_key = false;
@@ -40,21 +41,33 @@ public class Game {
         } catch (IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
-        bala = new Bullet(40, 12);
+        bala = new Bullet();
         ship = new Ship(38, 20);
+//        Point2D pos = new Point2D(40,17); // esli xotim 1 wall
+//        wall = new Wall(pos);
+this.createWall(); // eto dliy massiva wall
     }
-
+    
+public void createWall(){ // ubrat, esli xotum tolko odin wall
+    this.wall= new Wall[4];
+    for(int i=0; i<this.wall.length; i++){
+        this.wall[i] =new Wall (new Point2D(((i+1)*15),15));
+    }
+}
+public void paintWall (Screen s){
+    for(int i=0; i<this.wall.length; i++){
+        this.wall[i].paint(s);
+    }
+}
     public void loop() {
 
-        try {
-            
+        try {            
             try {
-                int x = 0, y = 0;
                 screen.startScreen();
                 screen.clear();
                 while (!this.exit_key) {
-                    x = (int) Math.random() * 80;
-                    y = (int) Math.random() * 24;
+                    //int x = (int) Math.random() * 80;
+                    //int y = (int) Math.random() * 24;
                     process_input();
                     update();
                     paint();
@@ -81,8 +94,20 @@ try {
 
     private void update() {
         this.ship.movebullets();
+        this.collissions();
     }
-
+ public void collissions(){
+        Bullet[] ship_bullets = this.ship.getBullets();
+        for(int i=0; i<this.wall.length; i++){
+            for(int j=0; j<ship_bullets.length; j++){
+                if(this.wall[i]!=null && ship_bullets[j]!=null){
+                    if(this.wall[i].collission(ship_bullets[j])){
+                        ship_bullets[j]=null;
+                    }
+                }
+            }
+        }
+    }
     private void paint() {
         TerminalSize terminalSize = screen.getTerminalSize();
         //limpiar la pantalla
@@ -95,14 +120,16 @@ try {
             }
         }
         this.ship.paint(this.screen);
+        this.paintWall(this.screen); // eto dlya 1 wall
         try {
             this.bala.paint(this.screen);
             screen.refresh();
         } catch (IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+    
     }
-
     private void process_input() {
         KeyStroke keyStroke = null;
         try {

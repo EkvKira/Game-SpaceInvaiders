@@ -18,7 +18,7 @@ public class Ship {
     private int width=7;
     private int height=2;
     private Bullet bullets[];
-    private static int max_bullets=3;
+    private static int max_bullets=5;
     private String cartoon[] = {
           "⢀⣀⣾⣷⣀⡀ ",
           "⣿⣿⣿⣿⣿⣿ "
@@ -74,6 +74,9 @@ public Ship() {
     for (int i=0; i<this.bullets.length; i++){
             if (this.bullets[i]!= null) {
             this.bullets[i].moveVertical(-1,0,24);
+            if(this.bullets[i].getPosicion().getY()<=0){
+                this.bullets[i]=new Bullet(); //esli postavit null to bydet besconechnosti
+            }
             }
         }
 }
@@ -105,10 +108,14 @@ public Ship() {
         return bullets;
     }
     public void shoot() {
-        this.bullets[0]= new Bullet(
+        boolean encontado=false;
+        for (int i=0; i<this.bullets.length &&!encontado; i++){
+            if(this.bullets[i]==null){
+        this.bullets[i]= new Bullet(
                 this.posicion.getX()+this.width/2,
                 this.posicion.getY()-2);
-        
-        
+        encontado=true;
+            }
+        }
      }
 }

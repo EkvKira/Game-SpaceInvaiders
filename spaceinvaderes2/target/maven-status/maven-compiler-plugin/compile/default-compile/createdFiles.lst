@@ -1,2 +1,7 @@
 ek\ieslaencanta\com\spaceinvaderes2\Game.class
 ek\ieslaencanta\com\spaceinvaderes2\Spaceinvaderes2.class
+ek\ieslaencanta\com\spaceinvaderes2\Bullet.class
+ek\ieslaencanta\com\spaceinvaderes2\Wall.class
+ek\ieslaencanta\com\spaceinvaderes2\Ship.class
+.netbeans_automatic_build
+ek\ieslaencanta\com\spaceinvaderes2\Point2D.class

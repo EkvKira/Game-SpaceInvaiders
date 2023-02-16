@@ -19,7 +19,7 @@ public class Bullet {
     private TextColor color;
     private TextColor backgroundcolor;
     private TextCharacter bulletsymbol;
-    private static int COUNT_MAX=24;
+    private static int COUNT_MAX=32;
     private int counter;
     
     public Bullet() {
@@ -38,23 +38,38 @@ public class Bullet {
     }
     private void init(){
         this.color= TextColor.ANSI.GREEN;
-        this.backgroundcolor= TextColor.ANSI.YELLOW;
+        this.backgroundcolor= TextColor.ANSI.GREEN;
          this.bulletsymbol= TextCharacter.fromCharacter(
          Symbols.ARROW_UP
          )[0].withForegroundColor(this.color).withBackgroundColor(this.backgroundcolor);
     }
     public void paint(Screen s){
-        s.setCharacter(this.posicion.getX(),
-                this.posicion.getY(),
+        s.setCharacter(this.getPosicion().getX(),
+                this.getPosicion().getY(),
                 this.bulletsymbol);
     }
     public void moveVertical(int incy, int miny, int maxy) {
         this.counter--;
         if(this.counter <=0) {
             this.counter=COUNT_MAX;
-        if(this.posicion.getY()+incy>=miny && this.posicion.getY()+incy<maxy){
-            this.posicion.addy(incy);
+        if( this.getPosicion().getY()+incy>=miny && this.getPosicion().getY()+incy<maxy){
+            this.getPosicion().addy(incy);
         }
         }
     }
+
+    /**
+     * @return the posicion
+     */
+    public Point2D getPosicion() {
+        return posicion;
+    }
+
+    /**
+     * @param posicion the posicion to set
+     */
+    public void setPosicion(Point2D posicion) {
+        this.posicion = posicion;
+    }
+    
 }
